@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 class CircleBar extends Component {
   render() {
+    const { id, value, text, className} = this.props
     return (
       <div className="svg-wrapper">
         <svg
@@ -21,18 +22,18 @@ class CircleBar extends Component {
           />
           <circle
             className="value"
-            id={this.props.id}
+            id={id}
             r="90"
             cx="100"
             cy="100"
             fill="transparent"
             stroke-dasharray="565.48"
-            stroke-dashoffset={(565.48 / 60) * (60 - this.props.value)}
+            stroke-dashoffset={(565.48 / 60) * (60 - value)}
           />
         </svg>
         <div className="info-wrapper">
-          <div className="time-left"> {this.props.value} </div>
-          <div className={this.props.className}> {this.props.text} </div>
+          <div className="time-left"> {value} </div>
+          <div className={className}> {text} </div>
         </div>
       </div>
     );
