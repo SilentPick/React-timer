@@ -43,31 +43,6 @@
   position: relative;
 }
 
-.panel-wrapper{
-  display: flex;
-  width: 100%;
-  justify-content: center;
-}
-
-.panel{
-  margin-right: 20px;
-}
-
-.control-panel{
-  display: flex;
-  justify-content: space-between;
-  width: 173px;
-  margin-top: 9px;
-}
-
-.control-button{
-  background: #24282B;
-  width: 80px;
-  border: none;
-  color: white;
-  height: 21px;
-}
-
 svg .value{
   transform: rotate(-90deg);
   transform-origin: center center;

@@ -7,7 +7,9 @@ class App extends Component {
   state = {
     value: "",
     visibleTimers: ["hours", "minutes", "seconds"],
-    timerValue: 0
+    timerValue: 0,
+    inputValue: "",
+    areaValue: ""
   };
 
   onSecondChange = e => {
@@ -21,24 +23,49 @@ class App extends Component {
     });
   };
 
+  onInputChange = e => {
+    let splitInputValue = e.target.value
+      .toLowerCase()
+      .split(",")
+      .map(str => str.trim())
+      .filter(str => ["hours", "minutes", "seconds"].includes(str));
+    this.setState({
+      inputValue: e.target.value,
+      visibleTimers: splitInputValue,
+      areaValue: splitInputValue.join("\n")
+    });
+  };
+
+  onAreaChange = e => {
+    let splitAreaValue = e.target.value
+      .toLowerCase()
+      .split("\n")
+      .filter(str => ["hours", "minutes", "seconds"].includes(str));
+    this.setState({
+      areaValue: e.target.value,
+      visibleTimers: splitAreaValue,
+      inputValue: splitAreaValue
+    });
+  };
+
   startTimer = () => {
-    this.date = Date.now()
-    clearInterval(this.timer)
+    this.date = Date.now();
+    clearInterval(this.timer);
     if (this.state.value === "") return;
     this.timer = setInterval(() => {
-      let timePass =  Date.now() - this.date
-      let timeLeft = this.state.value - Math.floor(timePass / 1000)
+      let timePass = Date.now() - this.date;
+      let timeLeft = this.state.value - Math.floor(timePass / 1000);
       if (timeLeft <= 0) {
         clearInterval(this.timer);
         return;
       }
       this.setState({
         timerValue: timeLeft
-      })
-    }, 100);
+      });
+    }, 900);
   };
 
-  onVisibleTimersChange = e => {
+  onVisibleTimersChange = (e) => {
     const options = e.target.options;
     let value = [];
     for (let i = 0, l = options.length; i < l; i++) {
@@ -46,7 +73,12 @@ class App extends Component {
         value.push(options[i].value);
       }
     }
-    this.setState({ visibleTimers: value });
+    console.log(value)
+    this.setState({
+      visibleTimers: value,
+      inputValue: value,
+      areaValue: value.join("\n")
+    });
   };
 
   resetTimer = () => {
@@ -57,7 +89,13 @@ class App extends Component {
   };
 
   render() {
-    const { visibleTimers, value, timerValue } = this.state;
+    const {
+      visibleTimers,
+      value,
+      timerValue,
+      inputValue,
+      areaValue
+    } = this.state;
     return (
       <div classNameName="App">
         <div className="timer">
@@ -86,29 +124,39 @@ class App extends Component {
             />
           )}
         </div>
-        <div className="panel-wrapper">
-          <div className="panel">
-            <input
-              placeholder="Enter the time in seconds"
-              value={value}
-              onChange={this.onSecondChange}
-            />
-            <div className="control-panel">
-              <button onClick={this.resetTimer} className="control-button"> Reset </button>
-              <button onClick={this.startTimer} className="control-button"> Start </button>
-            </div>
-          </div>
-          <select
-            multiple
-            size="3"
-            value={visibleTimers}
-            onChange={this.onVisibleTimersChange}
-          >
-            <option value="hours">Hours</option>
-            <option value="minutes">Minutes</option>
-            <option value="seconds">Seconds</option>
-          </select>
-        </div>
+        <input
+          placeholder="Enter the time in seconds"
+          value={value}
+          onChange={this.onSecondChange}
+        />
+        <button onClick={this.resetTimer} className="control-button">
+          {" "}
+          Reset{" "}
+        </button>
+        <button onClick={this.startTimer} className="control-button">
+          {" "}
+          Start{" "}
+        </button>
+        <select
+          multiple
+          size="3"
+          value={visibleTimers}
+          onChange={this.onVisibleTimersChange}
+        >
+          <option key="hours" value="hours">Hours</option>
+          <option key="minutes" value="minutes">Minutes</option>
+          <option key="seconds" value="seconds">Seconds</option>
+        </select>
+        <input
+          placeholder="seconds, minutes, hours"
+          value={inputValue}
+          onChange={this.onInputChange}
+        />
+        <textarea
+          placeholder="seconds&#10;minutes&#10;hours"
+          value={areaValue}
+          onChange={this.onAreaChange}
+        />
         <p>Press "Ctrl" or "Shift" for multi select</p>
       </div>
     );
