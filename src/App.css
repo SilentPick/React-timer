@@ -8,6 +8,10 @@
   justify-content: space-around;
 }
 
+textarea{
+  height: 50px;
+}
+
 .info-wrapper{
   position: absolute;
   top: 50%;

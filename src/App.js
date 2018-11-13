@@ -62,7 +62,7 @@ class App extends Component {
       this.setState({
         timerValue: timeLeft
       });
-    }, 900);
+    }, 500);
   };
 
   onVisibleTimersChange = (e) => {
